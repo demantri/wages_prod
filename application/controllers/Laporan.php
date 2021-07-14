@@ -62,7 +62,7 @@ class Laporan extends CI_Controller
             'content'  => 'buku_besar/laporan',
             'akun'     => $this->db->get('akun')->result(), 
             'list'     => $this->lm->getBB($where)->result(),
-            'saldo_awal'     => $this->lm->getBB($where)->row()->saldo_awal, 
+            'saldo_awal'     => $this->lm->getBB($where)->row()->saldo_awal ?? 0, 
             'where' => $where,
             $this->db->where('kode_akun =', $where['akun']),
             'header_akun' => $this->db->get('akun')->row()->nama_akun
