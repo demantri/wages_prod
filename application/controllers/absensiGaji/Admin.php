@@ -712,12 +712,12 @@ class Admin extends CI_Controller
     }
     $this->db->where('id', $id)->update('gaji');
 
+		// ngejurnal
 		if ($gaji['status'] == 0) {
-			# code...
 			$beban = [
 				'id_transaksi' => $id,
 				'tgl_jurnal' => date('Y-m-d'),
-				'no_coa' => 511,
+				'no_coa' => 512,
 				'posisi_dr_cr' => 'd',
 				'nominal' => $gaji['jml_gaji'],
 			];
