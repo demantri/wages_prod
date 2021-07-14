@@ -71,23 +71,23 @@
                         <?php if ($value->posisi_dr_cr == 'd') { ?>
                           <td><?= $value->nominal?></td>
                           <td></td>
+													<?php $total_d += $value->nominal ?>
                         <?php } else { ?>
                           <td></td>
                           <td><?= $value->nominal?></td>
+													<?php $total_k += $value->nominal ?>
                         <?php } ?>
 
                       </tr>
-                      <?php $total_d += $value->nominal ?>
-                      <?php $total_k += $value->nominal ?>
                       <?php } ?>
                     </tbody>
-                    <tfoot>
-                      <tr>
-                        <th colspan="3">Total</th>
-                        <th><?= $total_d ?></th>
-                        <th><?= $total_k ?></th>
-                      </tr>
-                    </tfoot>
+										<tfoot>
+											<tr>
+												<td colspan="3">Total</td>
+												<td><?= $total_d ?></td>
+												<td><?= $total_k ?></td>
+											</tr>
+										</tfoot>
                   </table>
                   <!-- <div class="form-group">
                     <div class="col-md-1 col-sm-6 col-xs-12">

@@ -4,18 +4,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Laporan_model extends CI_Model
 {
 
-	public function getJurnal($condition = array())
+	public function getJurnal($awal, $akhir)
 	{
-		if ($condition) {
-			// code...
-			$where = "tgl_jurnal BETWEEN '".$condition['awal']."' AND '".$condition['akhir']."' ";
-		}
+		// if ($condition) {
+		// 	// code...
+		// 	$where = "tgl_jurnal BETWEEN '".$condition['awal']."' AND '".$condition['akhir']."' ";
+		// }
+		// $sql = "SELECT a.*, nama_akun
+		// FROM jurnal a 
+		// INNER JOIN akun b ON a.no_coa = b.kode_akun
+		// WHERE $where 
+		// ORDER BY id ASC
+		// ";
 		$sql = "SELECT a.*, nama_akun
 		FROM jurnal a 
 		INNER JOIN akun b ON a.no_coa = b.kode_akun
-		WHERE $where 
-		ORDER BY id ASC
-		";
+		WHERE tgl_jurnal between '$awal' AND '$akhir'
+		ORDER BY id ASC";
 		return $this->db->query($sql);
 	}
 

@@ -105,22 +105,22 @@ class Laporan extends CI_Controller
             'title'    => 'Jurnal Umum',
             'user'     => infoLogin(),
             'toko'     => $this->db->get('profil_perusahaan')->row(),
-            'list'     => $this->lm->getJurnal($where)->result(),
+            'list'     => $this->lm->getJurnal($awal, $akhir)->result(),
             'content'  => 'jurnal_umum/laporan'
          );
          $this->load->view('templates/main', $data);
       } 
       else {
          $where = [
-            'awal' => $awal ? $awal : date('Y-m-d'), 
-            'akhir' => $akhir ? $akhir : date('Y-m-d')
+            'awal' => $awal ? $awal : '',
+            'akhir' => $akhir ? $akhir : ''
          ];
 
          $data = array(
             'title'    => 'Jurnal Umum',
             'user'     => infoLogin(),
             'toko'     => $this->db->get('profil_perusahaan')->row(),
-            'list'     => $this->lm->getJurnal($where)->result(),
+            'list'     => $this->lm->getJurnal($awal, $akhir)->result(),
             'content'  => 'jurnal_umum/laporan'
          );
          $this->load->view('templates/main', $data);
