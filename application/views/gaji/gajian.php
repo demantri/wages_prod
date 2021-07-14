@@ -74,14 +74,17 @@
                     <td><?= $data['durasi'] ?> Hari</td>
                     <td>
                       <?php if ($data['status'] == '1') : ?>
-                      <span class="badge badge-success badge-pill">Sudah Digaji</span>
+                      <span class="badge badge-success badge-pill" readonly>Sudah Digaji</span>
                       <?php else: ?>
                       <span class="badge badge-danger badge-pill">Pending</span>
                       <?php endif; ?>
 
-                      <a href="<?= base_url('absensiGaji/admin/setStatusGaji/' . $data['id']) ?>" class="float-right"
+                      <?php if ($data['status'] != 1) { ?>
+												<a href="<?= base_url('absensiGaji/admin/setStatusGaji/' . $data['id']) ?>" class="float-right"
                         data-toggle="tooltip" data-placement="left" title="Tandai Status"><i
-                          class="fas fa-check-circle"></i></a>
+                          class="fas fa-check-circle"></i>
+												</a>
+											<?php } ?>
                     </td>
                   </tr>
                   <?php endforeach; ?>

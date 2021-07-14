@@ -701,12 +701,38 @@ class Admin extends CI_Controller
   public function setStatusGaji($id)
   {
     $gaji = $this->Absen_model->getGajiId($id);
+
     if ($gaji['status'] == '1') {
       $this->db->set('status', 0);
     } else {
-      $this->db->set(['tgl' => date('Y-m-d'), 'status' => '1']);
+      $this->db->set([
+				'tgl' => date('Y-m-d'), 
+				'status' => '1']
+			);
     }
     $this->db->where('id', $id)->update('gaji');
+
+		if ($gaji['status'] == 0) {
+			# code...
+			$beban = [
+				'id_transaksi' => $id,
+				'tgl_jurnal' => date('Y-m-d'),
+				'no_coa' => 511,
+				'posisi_dr_cr' => 'd',
+				'nominal' => $gaji['jml_gaji'],
+			];
+			$this->db->insert('jurnal', $beban);
+
+			$kas = [
+				'id_transaksi' => $id,
+				'tgl_jurnal' => date('Y-m-d'),
+				'no_coa' => 111,
+				'posisi_dr_cr' => 'k',
+				'nominal' => $gaji['jml_gaji'],
+			];
+			$this->db->insert('jurnal', $kas);
+		}
+		// print_r($gaji);exit;
     redirect('absensiGaji/admin/inputGaji');
   }
   public function delDataGaji($id)
