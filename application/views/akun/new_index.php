@@ -12,7 +12,7 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header">
-            <form action="<?= base_url('admin/saveAkun') ?>" method="post" class="formDtaAkun">
+            <form action="<?= base_url('absensiGaji/admin/simpanAkun') ?>" method="post" class="formDtaAkun">
               <div class="input-group">
                 <input type="text" name="kode" class="form-control-sm form-control" placeholder="Kode Akun" required
                   autocomplete="off">
@@ -21,8 +21,8 @@
                 <input type="text" name="head" class="form-control-sm form-control" placeholder="Header Akun" required
                   autocomplete="off">
                 <select name="dc" class="form-control form-control-sm" required>
-                  <option value="Debit">Debit</option>
-                  <option value="Kredit">Kredit</option>
+                  <option value="d">Debit</option>
+                  <option value="c">Kredit</option>
                 </select>
                 <div class="input-group-append">
                   <button class="btn btn-sm btn-danger submit">Save</button>
@@ -40,27 +40,22 @@
                     <th>Nama Akun</th>
                     <th>Header</th>
                     <th>Debit/Kredit</th>
-                    <th>Opsi</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php foreach ($akun as $data) : ?>
                   <tr>
-                    <td><?= $data['kode']; ?></td>
-                    <td><?= $data['nama']; ?></td>
-                    <td>
-                      <?= $data['header'] ?>
-                    </td>
-                    <td><?= $data['dc'] ?></td>
-                    <td>
-                      <!-- <div class="btn-group"> -->
+                    <td><?= $data['kode_akun']; ?></td>
+                    <td><?= $data['nama_akun']; ?></td>
+                    <td><?= substr($data['kode_akun'], 0,1)  ?></td>
+                    <td><?= $data['c_d'] ?></td>
+                    <!-- <td>
                       <a href="<?= base_url('admin/editAkun/' . $data['id']) ?>" data-kode="<?= $data['kode']; ?>"
                         data-nama="<?= $data['nama']; ?>" data-head="<?= $data['header']; ?>"
                         data-dc="<?= $data['dc']; ?>" class="btnEditAkun"><i class="fas fa-edit fa-fw"></i>Edit</a>
                       <a href="<?= base_url('admin/delAkun/' . $data['id']) ?>" class="t-hapus text-danger"><i
                           class="fas fa-trash-alt fa-fw"></i>Delete</a>
-                      <!-- </div> -->
-                    </td>
+                    </td> -->
                   </tr>
                   <?php endforeach; ?>
                 </tbody>

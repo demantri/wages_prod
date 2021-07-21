@@ -49,28 +49,24 @@
                   <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th>Waktu Transaksi</th>
-                        <th>Keterangan</th>
-                        <th>Stok Masuk</th>
-                        <th>Stok Keluar</th>
-                        <th>Stok Akhir</th>
+                        <th class="text-center" rowspan="2">Waktu Transaksi</th>
+                        <th class="text-center" rowspan="2">Keterangan</th>
+                        <th class="text-center" colspan="3">Pembelian</th>
+                        <th class="text-center" colspan="3">Harga Pokok Penjualan</th>
+                        <th class="text-center" colspan="3">Saldo</th>
                       </tr>
-                    </thead>
+											<tr>
+												<th class="text-center">Unit</th>
+												<th class="text-center">Harga</th>
+												<th class="text-center">Total</th>
+												<th class="text-center">Unit</th>
+												<th class="text-center">Harga</th>
+												<th class="text-center">Total</th>
+												<th class="text-center">Unit</th>
+												<th class="text-center">Harga</th>
+												<th class="text-center">Total</th>
+											</tr>
                     <tbody>
-                    <?php foreach ($list as $key => $value): ?>
-                      <tr>
-                        <td><?= $value->tgl_input?></td>
-                        <td><?= $value->jenis?></td>
-                        <?php if ($value->jenis == 'Stok Masuk') { ?>
-                        <td><?= $value->jml?></td>
-                        <td></td>
-                        <?php } else { ?>
-                        <td></td>
-                        <td><?= $value->jml?></td>
-                        <?php } ?>
-                        <td><?= $value->stok_akhir?></td>
-                      </tr>
-                    <?php endforeach ?>
                     </tbody>
                   </table>
                 </form>

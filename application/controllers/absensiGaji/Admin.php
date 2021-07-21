@@ -9,6 +9,7 @@ class Admin extends CI_Controller
     parent::__construct();
     is_logged_in();
     // $this->db = $this->load->database('second', TRUE);
+		$this->load->model('Laporan_model');
   }
 
 
@@ -792,6 +793,65 @@ class Admin extends CI_Controller
     $this->load->view('gaji/slip', $data);
   }
 
+	public function akun()
+	{
+		# code...
+		$data['user'] = $this->db->get_where('user2', ['email' => $this->session->userdata('email')])->row_array();
+    // $data['akun'] = $this->Absen_model->akun();
+    $data['akun'] = $this->db->get('akun')->result_array();
+    // print_r($data['akun']);exit;
+		$data['judul'] = 'Data Akun';
+		$this->load->view('template/header', $data);
+    $this->load->view('akun/new_index', $data);
+    $this->load->view('template/footer', $data);
+	}
+
+	public function simpanAkun()
+	{
+		# code...
+		$kode = $this->input->post('kode');
+		$nama = $this->input->post('nama');
+		$head = $this->input->post('head');
+		$dc = $this->input->post('dc');
+
+		$data = [
+			'id' => $kode,
+			'kode_akun' => $kode,
+			'nama_akun' => $nama,
+			'c_d' => $dc,
+		];
+
+		$this->db->insert('akun', $data);
+		$this->session->set_flashdata('berhasil', 'Success');
+    redirect('absensiGaji/admin/akun');
+	}
+
+	public function jurnalUmum()
+	{
+		# code...
+		$tgl_awal = $this->input->post('tgl_awal');
+		$tgl_akhir = $this->input->post('tgl_akhir');
+		if (isset($tgl_awal, $tgl_akhir)) {
+			# code...
+			$data['user'] = $this->db->get_where('user2', ['email' => $this->session->userdata('email')])->row_array();
+			$data['list'] = $this->Laporan_model->getJurnal2($tgl_awal, $tgl_akhir)->result();
+			$data['tgl_awal'] = $tgl_awal;
+			$data['tgl_akhir'] = $tgl_akhir;
+			$data['judul'] = 'Jurnal Umum';
+			$this->load->view('template/header', $data);
+			$this->load->view('jurnal_umum/laporan_v2', $data);
+			$this->load->view('template/footer', $data);
+		} else {
+			$data['user'] = $this->db->get_where('user2', ['email' => $this->session->userdata('email')])->row_array();
+			$data['list'] = $this->Laporan_model->getJurnal2($tgl_awal, $tgl_akhir)->result();
+			$data['tgl_awal'] = '';
+			$data['tgl_akhir'] = '';
+			$data['judul'] = 'Jurnal Umum';
+			$this->load->view('template/header', $data);
+			$this->load->view('jurnal_umum/laporan_v2', $data);
+			$this->load->view('template/footer', $data);
+		}
+	}
 
   public function dataAkun()
   {
@@ -805,6 +865,8 @@ class Admin extends CI_Controller
     $this->load->view('gaji/akun', $data);
     $this->load->view('template/footer', $data);
   }
+
+
   public function saveAkun()
   {
     $kode = trim($this->input->post('kode', true));

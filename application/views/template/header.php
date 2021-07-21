@@ -131,10 +131,14 @@ $jmlAbsenKarBolos = $this->Absen_model->jmlKaryawanBolos();
                         echo 'active';
                       } ?>"><a href="<?= base_url('absensiGaji/admin/inputGaji'); ?>"><i
                 class="fas fa-file-invoice-dollar"></i></i>Input Gaji</a></li>
-          <li class="<?php if ($page == 'Data Akun') {
+          <!-- <li class="<?php if ($page == 'Data Akun') {
                         echo 'active';
                       } ?>"><a href="<?= base_url('absensiGaji/admin/dataAkun'); ?>"><i class="fas fa-calculator"></i></i>Data
-              Akun</a></li>
+              Akun</a></li> -->
+					<li class="<?php if ($page == 'Data Akun') {
+										echo 'active';
+									} ?>"><a href="<?= base_url('absensiGaji/admin/akun'); ?>"><i class="fas fa-calculator"></i></i>Data
+					Akun</a></li>
           <li class="<?php if ($page == 'Setting Absensi') {
                         echo 'active';
                       } ?>"><a href="<?= base_url('absensiGaji/admin/absen'); ?>"><i class="fas fa-cogs"></i></i>Setting
@@ -151,6 +155,12 @@ $jmlAbsenKarBolos = $this->Absen_model->jmlKaryawanBolos();
                         echo 'active';
                       } ?>"><a href="<?= base_url('absensiGaji/admin/profile'); ?>"><i class="fas fa-user-cog"></i></i>Setting
               Profile</a></li>
+					<li class="<?php if ($page == 'Jurnal Umum') {
+										echo 'active';
+									} ?>"><a href="<?= base_url('absensiGaji/admin/jurnalUmum'); ?>"><i class="fas fa-file-signature"></i></i>Jurnal Umum</a></li>
+					<li class="<?php if ($page == 'Buku Besar') {
+										echo 'active';
+									} ?>"><a href="<?= base_url('absensiGaji/admin/bukubesar'); ?>"><i class="fas fa-file-signature"></i></i>Buku Besar</a></li>
           <li class="<?php if ($page == 'Cetak ID') {
                         echo 'active';
                       } ?>"><a href="<?= base_url('absensiGaji/admin/downBarcode'); ?>"><i class="fas fa-qrcode"></i></i>Download
