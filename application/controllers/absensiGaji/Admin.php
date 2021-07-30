@@ -848,9 +848,90 @@ class Admin extends CI_Controller
 			$data['tgl_akhir'] = '';
 			$data['judul'] = 'Jurnal Umum';
 			$this->load->view('template/header', $data);
-			$this->load->view('jurnal_umum/laporan_v2', $data);
+			$this->load->view('jurnal_umum/laporan_v2');
 			$this->load->view('template/footer', $data);
 		}
+	}
+
+	public function bukubesar()
+	{
+		$kode_akun = $this->input->post('kode_akun');
+		$periode = $this->input->post('periode');
+
+		if (isset($kode_akun, $periode)) {
+			$tahun1 = date('Y', strtotime($periode));
+			$bulan1 = date('m', strtotime($periode));
+			$cek = date('m-d-Y', mktime(0,0,0,1, $bulan1-1, $tahun1));
+			$bulan = substr($cek, 3,2);
+			$tahun = substr($cek, 6,5);
+			$query = "SELECT sum(nominal) as debit , 
+			(
+				SELECT sum(nominal) 
+				FROM jurnal 
+				WHERE no_coa = '$kode_akun' 
+				AND MONTH(tgl_jurnal) <= '$bulan' 
+				AND YEAR(tgl_jurnal) <= '$tahun' 
+				and posisi_dr_cr = 'k' 
+			) AS kredit 
+			FROM jurnal 
+			WHERE no_coa = '$kode_akun' 
+			AND MONTH(tgl_jurnal) <= '$bulan' 
+			AND YEAR(tgl_jurnal) <= '$tahun' 
+			and posisi_dr_cr = 'd'
+			";
+			$saldo_awal = $this->db->query($query)->row();
+			
+			$data['judul'] = 'Buku Besar';
+			$data['user'] = $this->db->get_where('user2', ['email' => $this->session->userdata('email')])->row_array();
+			$data['akun'] = $this->db->get('akun')->result();
+			$data['list'] = $this->Laporan_model->getBB($kode_akun, $periode)->result();
+			$data['saldo'] = $this->Laporan_model->getBB($kode_akun, $periode)->row()->saldo_awal ?? 0;
+			$data['saldo_awal'] = $saldo_awal;
+			// print_r($data['saldo']);exit;
+
+			$this->load->view('template/header', $data);
+			$this->load->view('buku_besar/laporan_v2', $data);
+			$this->load->view('template/footer', $data);
+		} else {
+			# code...
+			$tahun1 = date('Y', strtotime($periode));
+			$bulan1 = date('m', strtotime($periode));
+			$cek = date('m-d-Y', mktime(0,0,0,1, $bulan1-1, $tahun1));
+			$bulan = substr($cek, 3,2);
+			$tahun = substr($cek, 6,5);
+			$query = "SELECT sum(nominal) as debit , 
+			(
+				SELECT sum(nominal) 
+				FROM jurnal 
+				WHERE no_coa = '$kode_akun' 
+				AND MONTH(tgl_jurnal) <= '$bulan' 
+				AND YEAR(tgl_jurnal) <= '$tahun' 
+				and posisi_dr_cr = 'k' 
+			) AS kredit 
+			FROM jurnal 
+			WHERE no_coa = '$kode_akun' 
+			AND MONTH(tgl_jurnal) <= '$bulan' 
+			AND YEAR(tgl_jurnal) <= '$tahun' 
+			and posisi_dr_cr = 'd'
+			";
+			$saldo_awal = $this->db->query($query)->row();
+			
+			$data['judul'] = 'Buku Besar';
+			$data['user'] = $this->db->get_where('user2', ['email' => $this->session->userdata('email')])->row_array();
+			$data['akun'] = $this->db->get('akun')->result();
+			$data['list'] = $this->Laporan_model->getBB($kode_akun, $periode)->result();
+			$data['saldo'] = 0;
+			$data['saldo_awal'] = $saldo_awal;
+			// print_r($data['saldo']);exit;
+
+			$this->load->view('template/header', $data);
+			$this->load->view('buku_besar/laporan_v2', $data);
+			$this->load->view('template/footer', $data);
+		}
+		
+
+
+		
 	}
 
   public function dataAkun()

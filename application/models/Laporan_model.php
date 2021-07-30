@@ -24,15 +24,13 @@ class Laporan_model extends CI_Model
 		return $this->db->query($sql);
 	}
 
-	public function getBB($condition = array())
+	public function getBB($coa, $tgl)
 	{
-		if ($condition) {
-			$where = "no_coa = '".$condition['akun']."' AND LEFT(tgl_jurnal, 7) = '".$condition['periode']."'";
-		}
 		$sql ="SELECT a.*, nama_akun, saldo_awal
 		FROM jurnal a
 		JOIN akun b ON a.no_coa = b.kode_akun
-		WHERE $where
+		WHERE no_coa = '$coa'
+		AND LEFT(tgl_jurnal, 7) = '$tgl'
 		";
 		return $this->db->query($sql);
 	}
