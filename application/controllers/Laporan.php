@@ -61,8 +61,8 @@ class Laporan extends CI_Controller
             'toko'     => $this->db->get('profil_perusahaan')->row(),
             'content'  => 'buku_besar/laporan',
             'akun'     => $this->db->get('akun')->result(), 
-            'list'     => $this->lm->getBB($where)->result(),
-            'saldo_awal'     => $this->lm->getBB($where)->row()->saldo_awal ?? 0, 
+            'list'     => $this->lm->getBB($akun, $periode)->result(),
+            'saldo_awal'     => $this->lm->getBB($akun, $periode)->row()->saldo_awal ?? 0, 
             'where' => $where,
             $this->db->where('kode_akun =', $where['akun']),
             'header_akun' => $this->db->get('akun')->row()->nama_akun
@@ -82,7 +82,7 @@ class Laporan extends CI_Controller
             'toko'     => $this->db->get('profil_perusahaan')->row(),
             'content'  => 'buku_besar/laporan',
             'akun'     => $this->db->get('akun')->result(), 
-            'list'     => $this->lm->getBB($where)->result(),
+            'list'     => $this->lm->getBB($akun, $periode)->result(),
             'saldo_awal'     => '', 
             'where' => $where, 
             'header_akun' => ''

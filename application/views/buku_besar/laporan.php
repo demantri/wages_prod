@@ -46,6 +46,8 @@
                     <h5><?= $header_akun?> - Periode <?= date('F Y', strtotime($where['periode'])) ?> </h5>
                   </center>
                   <br>
+									<h5>No Akun : <?= $where['akun']?></h5>
+									<h5>Akun : <?= $header_akun?></h5>
                   <table class="table table-bordered">
                     <thead>
                       <tr>
