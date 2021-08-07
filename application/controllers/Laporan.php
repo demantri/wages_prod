@@ -100,7 +100,30 @@ class Laporan extends CI_Controller
             'akun'   => $akun ? $akun : '-',
             'periode'=> $periode ? $akun : date('Y-m')
          ];
+			$tahun1 = date('Y', strtotime($periode));
+			$bulan1 = date('m', strtotime($periode));
+			$cek = date('m-d-Y', mktime(0,0,0,1, $bulan1-1, $tahun1));
+			$bulan = substr($cek, 3,2);
+			$tahun = substr($cek, 6,5);
+			$query = "SELECT sum(nominal) as debit , 
+			(
+				SELECT sum(nominal) 
+				FROM jurnal 
+				WHERE no_coa = '$akun' 
+				AND MONTH(tgl_jurnal) <= '$bulan' 
+				AND YEAR(tgl_jurnal) <= '$tahun' 
+				and posisi_dr_cr = 'k' 
+			) AS kredit 
+			FROM jurnal 
+			WHERE no_coa = '$akun' 
+			AND MONTH(tgl_jurnal) <= '$bulan' 
+			AND YEAR(tgl_jurnal) <= '$tahun' 
+			and posisi_dr_cr = 'd'
+			";
+			$saldo_awal = $this->db->query($query)->row();
 
+			// $this->db->where('kode_akun =', $akun);
+			// $header_akun = $this->db->get('akun')->row()->nama_akun;
          $data = array(
             'title'    => 'Laporan Buku Besar',
             'user'     => infoLogin(),
@@ -108,9 +131,10 @@ class Laporan extends CI_Controller
             'content'  => 'buku_besar/laporan',
             'akun'     => $this->db->get('akun')->result(), 
             'list'     => $this->lm->getBB($akun, $periode)->result(),
-            'saldo_awal'     => '', 
+            'saldo'     => 0, 
             'where' => $where, 
-            'header_akun' => ''
+            'header_akun' => '', 
+				'saldo_awal' => $saldo_awal
          );
          $this->load->view('templates/main', $data);
       }
