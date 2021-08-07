@@ -815,7 +815,7 @@ class Admin extends CI_Controller
 		$dc = $this->input->post('dc');
 
 		$data = [
-			'id' => $kode,
+			// 'id' => $kode,
 			'kode_akun' => $kode,
 			'nama_akun' => $nama,
 			'c_d' => $dc,

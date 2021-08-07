@@ -51,6 +51,8 @@
 				$('#iditem').val(obj.id_barang);
 				$('#harga').val(obj.harga_beli);
 				$('#stok').val(obj.stok);
+				$('#harga_beli').val(obj.harga_sales);
+				inputJml(obj.harga_sales)
 			}
 		})
 	}
@@ -66,7 +68,22 @@
 				$('#stok').val(obj.stok);
 				$('#iditem').val(obj.id_barang);
 				$('#harga').val(obj.harga_beli);
+				$('#harga_beli').val(obj.harga_sales);
+				inputJml(obj.harga_sales)
+				// $('#total').val(obj.harga_beli);
 			}
+		})
+	}
+
+	function inputJml(harga_sales) {
+		var harga = harga_sales
+		$("input[name='jml']").keyup(function() {
+			var typing = $(this).val()
+			// var harga = e
+			var rumus = typing * harga
+			
+			$("#total").val(rumus)
+			// console.log(rumus)
 		})
 	}
 

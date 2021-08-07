@@ -13,6 +13,22 @@ class Stok_m extends CI_Model
         return $this->db->query($sql)->result_array();
     }
 
+	public function kd_stok()
+	{
+		date_default_timezone_set('Asia/Jakarta');
+		$q = $this->db->query("SELECT MAX(RIGHT(id_stok,4)) AS kd_max FROM stok");
+        $kd = "";
+        if($q->num_rows()>0){
+            foreach($q->result() as $k){
+                $tmp = ((int)$k->kd_max)+1;
+                $kd = sprintf("%04s", $tmp);
+            }
+        }else{
+            $kd = "0001";
+        }
+        return "STK-".date('dmy').$kd;
+	}
+
     public function Save()
     {
         $harga = $this->input->post('harga');
@@ -20,12 +36,18 @@ class Stok_m extends CI_Model
         $jenis = $this->input->post('jenis');
         $nilai = $jml * $harga;
         $id = $this->input->post('iditem');
+		$harga_satuan = $this->input->post('harga_beli');
+		$total = $this->input->post('total');
+		$kode = $this->input->post('kode');
         $data = array(
+			'kode_stok'		  => $kode,
             'id_barang'       => htmlspecialchars($id, true),
             'jml'             => htmlspecialchars($jml, true),
             'tanggal'         => date('Y-m-d H:i:s'),
             'jenis'           => $jenis,
             'keterangan'      => htmlspecialchars($this->input->post('keterangan'), true),
+            'harga_satuan'    => $harga_satuan,
+            'total'      	  => $total,
         );
         $this->db->insert($this->table, $data);
 
@@ -48,6 +70,25 @@ class Stok_m extends CI_Model
             'stok_akhir' => $hasil,
         ];
         $this->db->insert('transaksi', $trans_stok);
+
+		// update jurnal 
+		$pembelian = [
+			'id_transaksi' => $kode,
+			'tgl_jurnal' => date('Y-m-d'),
+			'no_coa' => 500,
+			'posisi_dr_cr' => 'd',
+			'nominal' => $total,
+		];
+		$this->db->insert('jurnal', $pembelian);
+
+		$kas = [
+			'id_transaksi' => $kode,
+			'tgl_jurnal' => date('Y-m-d'),
+			'no_coa' => 111,
+			'posisi_dr_cr' => 'k',
+			'nominal' => $total,
+		];
+		$this->db->insert('jurnal', $kas);
     }
 
     public function Delete($id)

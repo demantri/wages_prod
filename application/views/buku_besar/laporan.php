@@ -27,7 +27,7 @@
                       <select name="id_akun" id="id_akun" class="form-control select2" required>
                           <option value="">Select</option>
                           <?php foreach($akun as $i) : ?>
-                              <option value="<?=$i->id;?>"><?=$i->nama_akun;?></option>
+                              <option value="<?=$i->kode_akun;?>"><?=$i->nama_akun;?></option>
                           <?php endforeach;?>
                       </select>
                     </div>
@@ -51,32 +51,62 @@
                   <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th>Tanggal</th>
-                        <th>Keterangan</th>
-                        <th>Debit</th>
-                        <th>Kredit</th>
-                        <th>Saldo</th>
+												<th>Tanggal</th>
+												<th>Keterangan</th>
+												<th>Ref</th>
+												<th>Debit</th>
+												<th>Credit</th>
+												<th>Saldo</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td colspan="4">Saldo Awal</td>
-                        <td><?= $saldo_awal ?></td>
-                      </tr>
-                      <?php foreach ($list as $key => $value) { ?>
-                        <tr>
-                          <td><?= $value->tgl_jurnal?></td>
-                          <td><?= $value->nama_akun?></td>
-                          <?php if ($value->posisi_dr_cr == 'd') { ?>
-                            <td><?= $value->nominal?></td>
-                            <td></td>
-                          <?php } else { ?>
-                            <td></td>
-                            <td><?= $value->nominal?></td>
-                          <?php } ?>
-                          <td><?= $value->nominal?></td>
-                        </tr>
-                      <?php } ?>
+										<?php 
+											$saldo_a = $saldo_awal->debit - $saldo_awal->kredit;
+											$saldo_awal = $saldo + $saldo_a;
+										?>
+										<tr>
+											<td>0000-00-00</td>
+											<td>Saldo Awal</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td class="text-right"><?= $saldo_awal?></td>
+										</tr>
+										<?php
+										foreach ($list as $key => $value) { ?>
+										<?php $header = substr($value->no_coa, 0, 1); ?>
+												<tr>
+													<td><?= $value->tgl_jurnal?></td>
+													<td><?= $value->nama_akun?></td>
+																		<td><?= $value->no_coa?></td>
+													<?php if ($value->posisi_dr_cr == 'd') {?>
+														<?php if ($header == 1 OR $header == 5 OR $header == 6 ) { ?>
+															<?php $saldo_awal = $saldo_awal + $value->nominal; ?>
+														<?php } else { ?>
+															<?php $saldo_awal = $saldo_awal - $value->nominal; ?>
+														<?php } ?>
+														<td class="text-right"><?= $value->nominal?></td>
+														<td></td>
+													<?php } else { ?>
+														<?php if ($header == 1 OR $header == 5 OR $header == 6 ) { ?>
+															<?php $saldo_awal = $saldo_awal - $value->nominal; ?>
+														<?php } else { ?>
+															<?php $saldo_awal = $saldo_awal + $value->nominal; ?>
+														<?php } ?>
+														<td></td>
+														<td class="text-right"><?= $value->nominal?></td>
+													<?php } ?>
+													<td class="text-right"><?= $saldo_awal?></td>
+												</tr>
+											<?php } ?>
+										<tr>
+											<td>0000-00-00</td>
+											<td>Saldo Akhir</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td class="text-right"><?= $saldo_awal?></td>
+										</tr>
                     </tbody>
                   </table>
                 </form>

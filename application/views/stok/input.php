@@ -21,6 +21,7 @@
 					</div>
 					<div class="x_content">
 						<form class="form-horizontal" method="post" action="<?php echo base_url('stok/create') ?>">
+							<input type="hidden" name="kode" value="<?= $kode ?>">
 							<div class="form-group">
 								<input type="hidden" class="form-control" name="iditem" id="iditem" readonly>
 								<label class="control-label col-md-3 col-sm-3 col-xs-12">Barcode</label>
@@ -42,13 +43,25 @@
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12">Jumlah</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
-									<input type="number" class="form-control" name="jml" id="jml" required autocomplete="off">
+									<input type="number" class="form-control" name="jml" id="jml" min="1" autocomplete="off" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Harga per unit</label>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<input type="number" class="form-control" name="harga_beli" id="harga_beli" required autocomplete="off" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Total</label>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<input type="number" class="form-control" name="total" id="total" required autocomplete="off" readonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12">Jenis</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
-									<select name="jenis" id="jenis" class="form-control select2">
+									<select name="jenis" id="jenis" class="form-control select2" required>
 										<option value="Stok Masuk">Stok Masuk</option>
 									</select>
 								</div>
@@ -56,7 +69,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12">Keterangan</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
-									<textarea name="keterangan" class="form-control" id="keterangan" cols="30" rows="3"></textarea>
+									<textarea name="keterangan" class="form-control" id="keterangan" cols="30" rows="3" required></textarea>
 								</div>
 							</div>
 							<div style="text-align: right">

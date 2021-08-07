@@ -25,11 +25,14 @@ class Stok extends CI_Controller
 
     public function input()
     {
+		$kd_stok = $this->Stok_m->kd_stok();
+		// print_r($kd_stok);exit;
         $data = array(
             'title'    => 'Input Stok Masuk',
             'user'     => infoLogin(),
             'content'  => 'stok/input',
             'toko'     => $this->db->get('profil_perusahaan')->row(),
+			'kode'	   => $kd_stok
         );
         $this->load->view('templates/main', $data);
     }
