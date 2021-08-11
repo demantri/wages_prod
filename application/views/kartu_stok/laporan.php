@@ -43,7 +43,7 @@
                   <hr>
                   <center>
                     <h3>Kartu Stok</h3>
-                    <h5></h5>
+                    <h5>Periode <?= $periode ?></h5>
                   </center>
                   <br>
                   <table class="table table-bordered">
@@ -67,6 +67,22 @@
 												<th class="text-center">Total</th>
 											</tr>
                     <tbody>
+											<?php foreach ($list as $key => $value) { ?>
+												<?php $ket = substr($value->no_trans, 0, 3) == 'STK' ? 'Stok Masuk' : 'Stok Keluar' ?>
+												<tr>
+													<td><?= $value->tgl_trans?></td>
+													<td><?= $ket?></td>
+													<td><?= $value->unit1?></td>
+													<td class="text-right"><?= $value->harga1?></td>
+													<td class="text-right"><?= $value->total1?></td>
+													<td><?= $value->unit2?></td>
+													<td class="text-right"><?= $value->harga2?></td>
+													<td class="text-right"><?= $value->total2?></td>
+													<td><?= $value->unit3?></td>
+													<td class="text-right"><?= $value->harga3?></td>
+													<td class="text-right"><?= $value->total3?></td>
+												</tr>
+											<?php } ?>
                     </tbody>
                   </table>
                 </form>

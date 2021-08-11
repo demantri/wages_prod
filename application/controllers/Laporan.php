@@ -77,22 +77,27 @@ class Laporan extends CI_Controller
 			and posisi_dr_cr = 'd'
 			";
 			$saldo_awal = $this->db->query($query)->row();
-
+			
+			// print_r($saldo_awal);exit;
 			$this->db->where('kode_akun =', $akun);
-			$header_akun = $this->db->get('akun')->row()->nama_akun;
+			$header_akun 	= $this->db->get('akun')->row()->nama_akun;
+
+			$val_saldo 		= $this->lm->saldo($akun)->row()->saldo_awal;
+			// print_r($val_saldo);exit;
+
          $data = array(
-            'title'    => 'Laporan Buku Besar',
+				'title'    => 'Laporan Buku Besar',
             'user'     => infoLogin(),
             'toko'     => $this->db->get('profil_perusahaan')->row(),
             'content'  => 'buku_besar/laporan',
             'akun'     => $this->db->get('akun')->result(), 
             'list'     => $this->lm->getBB($akun, $periode)->result(),
-            'saldo'    => $this->lm->getBB($akun, $periode)->row()->saldo_awal ?? 0, 
+            // 'saldo'    => $this->lm->getBB($akun, $periode)->row()->saldo_awal ?? 0, 
+            'saldo'    => $val_saldo, 
             'where' => $where,
             'header_akun' => $header_akun, 
 				'saldo_awal' => $saldo_awal
          );
-         // print_r($akun);exit;
          $this->load->view('templates/main', $data);
       } else {
          // code...
@@ -185,15 +190,17 @@ class Laporan extends CI_Controller
             'id_barang' => $id_barang, 
             'periode' => $periode
          ];
-
+			$periode = date('F Y', strtotime($where['periode']));
          $data = array(
             'title'    => 'Kartu Stok',
             'user'     => infoLogin(),
             'toko'     => $this->db->get('profil_perusahaan')->row(),
             'list'     => $this->lm->getStok($where)->result(),
             'barang'   => $this->db->get('barang')->result(),
+				'periode'  => $periode,
             'content'  => 'kartu_stok/laporan'
          );
+			// print_r($data);exit;
          $this->load->view('templates/main', $data);
       } 
       else {
@@ -208,6 +215,7 @@ class Laporan extends CI_Controller
             'toko'     => $this->db->get('profil_perusahaan')->row(),
             'list'     => $this->lm->getStok($where)->result(),
             'barang'   => $this->db->get('barang')->result(),
+				'periode'  => '-',
             'content'  => 'kartu_stok/laporan'
          );
          $this->load->view('templates/main', $data);

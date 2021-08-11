@@ -166,25 +166,125 @@ class Penjualan_m extends CI_Model
         ];
         $this->db->insert('jurnal', $j_k);
 
-        $this->db->select(['a.id',]);
-        $this->db->from('transaksi_coa b');
-        $this->db->join('akun a', 'a.id=b.id_akun', 'inner');
-        $this->db->where(['b.transaksi' => 'penjualan']);
-        $akun = $this->db->get();
+        // $this->db->select(['a.id',]);
+        // $this->db->from('transaksi_coa b');
+        // $this->db->join('akun a', 'a.id=b.id_akun', 'inner');
+        // $this->db->where(['b.transaksi' => 'penjualan']);
+        // $akun = $this->db->get();
 
-        foreach($akun->result() as $i){
-            if(strcmp($i->kelompok, 1) == 0){
-                $nominal = $harga_jual;
-            } else {
-                $nominal = $harga_jual;
+        // foreach($akun->result() as $i){
+        //     if(strcmp($i->kelompok, 1) == 0){
+        //         $nominal = $harga_jual;
+        //     } else {
+        //         $nominal = $harga_jual;
+        //     }
+
+        //     $this->db->insert('jurnal_umum', [
+        //         'transaksi' => 'penjualan',
+        //         'id_akun' => $i->id,
+        //         'tgl' => date('Y-m-d'),
+        //         'nominal' => $nominal
+        //     ]);
+        // }
+
+		//stock card
+        $this->db->where('id_jual', $id );
+        $list_data = $this->db->get('detil_penjualan')->result_array();
+
+        foreach ($list_data as $data) {
+
+            $pengurang = $data['qty_jual'];
+            $id_barang = $data['id_barang'];
+
+            $query111 = "SELECT * FROM transaksi WHERE jenis = 'Stok Masuk' AND id_barang = '$id_barang' AND  stok_akhir > 0 ORDER by id ASC";
+            $row = $this->db->query($query111)->result_array();
+
+            foreach($row as $row) {
+
+              $tgl  = $row['id'];
+              $stok = $row['stok_akhir'];
+                if($pengurang > 0) { 
+                    $temp = $pengurang;
+                    $pengurang = $pengurang - $stok;
+                    if($pengurang > 0) {      
+                        $stok_update = 0;
+                    }else{
+                        $stok_update = $stok - $temp;
+                    }
+                $this->db->set('stok_akhir', $stok_update);
+                $this->db->where('id_barang', $id_barang);
+                $this->db->where('jenis', "Stok Masuk");
+                $this->db->where('id', $tgl);
+                $this->db->update('transaksi');
+                }
             }
+        }
 
-            $this->db->insert('jurnal_umum', [
-                'transaksi' => 'penjualan',
-                'id_akun' => $i->id,
-                'tgl' => date('Y-m-d'),
-                'nominal' => $nominal
-            ]);
+        //
+        // $this->db->where('kode_detil_jual', $detiljual);
+        // $val0 = $this->db->get('detil_penjualan')->result_array();
+        $query1 = "SELECT id_barang, id_jual, sum(qty_jual) qty_jual, sum(subtotal) subtotal, harga_item
+		FROM detil_penjualan
+		WHERE id_jual = '$id'
+		GROUP BY id_barang";
+        $val0 = $this->db->query($query1)->result_array(); 
+        foreach ($val0 as $data) {
+            $this->db->where('id_barang', $data['id_barang']);
+            $this->db->where('stok_akhir >', 0);
+            $this->db->where('jenis', "Stok Masuk");
+            $val1 = $this->db->get('transaksi');
+
+            if($val1->num_rows() > 0){
+                foreach ($val1->result_array() as $data1){
+                $brg1 = $data1['id_barang'];
+                $this->db->where('id_barang', $brg1);
+                $harga = $this->db->get('barang')->row()->harga_sales;
+                $d1 = array(
+					'no_trans' => $kodepenjualan,
+					'id_barang' => $brg1,
+					'unit1' => '-',
+					'harga1' => '-',
+					'total1' => '-',
+					'unit2' => '-',
+					'harga2' => '-',
+					'total2' => '-',
+					'unit3' => $data1['stok_akhir'],
+					'harga3' => $harga,
+					'total3' => $data1['stok_akhir'] * $harga
+				);
+                $this->db->insert('table_stock_card', $d1);
+                }
+                //
+                $this->db->where('no_trans', $kodepenjualan);
+                $this->db->where('id_barang', $data['id_barang']);
+                $this->db->order_by('no ASC');
+                $cek_no = $this->db->get('table_stock_card')->row_array()['no'];
+                //
+               
+                $this->db->where('no', $cek_no);
+                $this->db->set('unit2', $data['qty_jual']);
+                $this->db->set('harga2', $data['harga_item']);
+                $this->db->set('total2', $data['subtotal']);
+                $this->db->update('table_stock_card');
+                   
+                
+                    
+            }else{
+                $d1 = array(
+                    'no_trans' => $kodepenjualan,
+                    'id_barang'   => $data['id_barang'],
+                    'unit1'     => '-',
+                    'harga1'    => '-',
+                    'total1'    => '-',
+                    'unit2'     => $data['qty_jual'],
+                    'harga2'    => $data['harga_item'],
+                    'total2'    => $data['subtotal'],
+                    'unit3'     => $data['qty_jual'],
+                    'harga3'    => $data['harga_item'],
+                    'total3'    => $data['subtotal'], 
+                );
+                $this->db->insert('table_stock_card', $d1);
+            }
         }
 
 

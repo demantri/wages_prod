@@ -35,14 +35,27 @@ class Laporan_model extends CI_Model
 		return $this->db->query($sql);
 	}
 
+	public function saldo($coa)
+	{
+		$sql = "SELECT saldo_awal 
+		FROM akun
+		WHERE kode_akun = '$coa'
+		";
+		return $this->db->query($sql);
+	}
+
 	public function getStok($condition = array())
 	{
 		if ($condition) {
-			$where = "id_barang = '".$condition['id_barang']."' AND LEFT(tgl_input, 7) = '".$condition['periode']."'";
+			$where = "id_barang = '".$condition['id_barang']."' AND LEFT(tgl_trans, 7) = '".$condition['periode']."'";
 		}
 
-		$sql ="SELECT * 
-		FROM transaksi
+		// $sql ="SELECT * 
+		// FROM transaksi
+		// WHERE $where
+		// ";
+		$sql = "SELECT * 
+		FROM table_stock_card
 		WHERE $where
 		";
 		return $this->db->query($sql);

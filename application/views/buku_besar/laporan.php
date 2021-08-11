@@ -63,6 +63,7 @@
 										<?php 
 											$saldo_a = $saldo_awal->debit - $saldo_awal->kredit;
 											$saldo_awal = $saldo + $saldo_a;
+											// print_r($saldo);
 										?>
 										<tr>
 											<td>0000-00-00</td>

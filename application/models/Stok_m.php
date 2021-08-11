@@ -89,6 +89,64 @@ class Stok_m extends CI_Model
 			'nominal' => $total,
 		];
 		$this->db->insert('jurnal', $kas);
+
+		// 
+		$this->db->where('kode_stok', $kode);
+        $val0 = $this->db->get('stok')->result_array();
+        foreach ($val0 as $data) {
+
+            $this->db->where('id_barang', $data['id_barang']);
+            $this->db->where('stok_akhir >', 0);
+            $this->db->where('jenis', "Stok Masuk");
+            $val1 = $this->db->get('transaksi');
+
+            if($val1->num_rows() > 0){
+                foreach ($val1->result_array() as $data1){
+                $brg1 = $data1['id_barang'];
+                $this->db->where('id_barang', $brg1);
+                $harga = $this->db->get('barang')->row()->harga_sales;
+                $d1 = array('no_trans' => $kode,
+                'id_barang' => $brg1,
+                'unit1' => '-',
+                'harga1' => '-',
+                'total1' => '-',
+                'unit2' => '-',
+                'harga2' => '-',
+                'total2' => '-',
+                'unit3' => $data1['stok_akhir'],
+                'harga3' => $harga,
+                'total3' => $data1['stok_akhir'] * $harga);
+                $this->db->insert('table_stock_card', $d1);
+                }
+                //
+                $this->db->where('no_trans', $kode);
+                $this->db->where('id_barang', $data['id_barang']);
+                $this->db->order_by('no ASC');
+                $cek_no = $this->db->get('table_stock_card')->row_array()['no'];
+                //
+                $this->db->where('no', $cek_no);
+                $this->db->set('unit1', $data['jml']);
+                $this->db->set('harga1', $data['harga_satuan']);
+                $this->db->set('total1', $data['total']);
+                $this->db->update('table_stock_card');
+                    
+            }else{
+                $d1 = array(
+                    'no_trans' => $kode,
+                    'id_barang'   => $data['id_barang'],
+                    'unit1'     => $data['jml'],
+                    'harga1'    => $data['harga_satuan'],
+                    'total1'    => $data['total'],
+                    'unit2'     => '-',
+                    'harga2'    => '-',
+                    'total2'    => '-',
+                    'unit3'     => $data['jml'],
+                    'harga3'    => $data['harga_satuan'],
+                    'total3'    => $data['total']
+                );
+                $this->db->insert('table_stock_card', $d1);
+            }
+        }
     }
 
     public function Delete($id)
