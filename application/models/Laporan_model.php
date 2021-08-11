@@ -10,6 +10,7 @@ class Laporan_model extends CI_Model
 		FROM jurnal a 
 		INNER JOIN akun b ON a.no_coa = b.kode_akun
 		WHERE tgl_jurnal between '$awal' AND '$akhir'
+		AND LEFT(id_transaksi, 3) != 'sld' /* <-- kunci query nya*/
 		ORDER BY id ASC";
 		return $this->db->query($sql);
 	}

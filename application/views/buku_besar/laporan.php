@@ -61,8 +61,8 @@
                     </thead>
                     <tbody>
 										<?php 
-											$saldo_a = $saldo_awal->debit - $saldo_awal->kredit;
-											$saldo_awal = $saldo + $saldo_a;
+											$saldo_awal = $saldo_awal->debit - $saldo_awal->kredit;
+											// $saldo_awal = $saldo + $saldo_a;
 											// print_r($saldo);
 										?>
 										<tr>
