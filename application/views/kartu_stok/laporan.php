@@ -79,7 +79,7 @@
 													<td class="text-right"><?= $value->harga2?></td>
 													<td class="text-right"><?= $value->total2?></td>
 													<td><?= $value->unit3?></td>
-													<td class="text-right"><?= $value->harga3?></td>
+													<td class="text-right"><?= format_rp($value->harga3)?></td>
 													<td class="text-right"><?= $value->total3?></td>
 												</tr>
 											<?php } ?>

@@ -38,7 +38,7 @@
                   <hr>
                   <center>
                     <h3>Jurnal Umum</h3>
-                    <h5>periode </h5>
+                    <h5><?= $periode ?> </h5>
                   </center>
                   <br>
                   <table class="table table-bordered">

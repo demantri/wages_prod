@@ -7,7 +7,7 @@ $autoload['libraries'] = array('database', 'email', 'session', 'datatables', 'fp
 
 $autoload['drivers'] = array();
 
-$autoload['helper'] = array('url', 'file', 'security', 'pos', 'download', 'soerawung_helper');
+$autoload['helper'] = array('url', 'file', 'security', 'pos', 'download', 'soerawung_helper', 'format_rp');
 
 $autoload['config'] = array();
 

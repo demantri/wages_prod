@@ -154,13 +154,15 @@ class Laporan extends CI_Controller
             'awal' => $awal, 
             'akhir' => $akhir
          ];
-
+			$periode = $where['awal'].' s/d '.$where['akhir'];
+			// print_r($periode);exit;
          $data = array(
             'title'    => 'Jurnal Umum',
             'user'     => infoLogin(),
             'toko'     => $this->db->get('profil_perusahaan')->row(),
             'list'     => $this->lm->getJurnal($awal, $akhir)->result(),
-            'content'  => 'jurnal_umum/laporan'
+            'content'  => 'jurnal_umum/laporan', 
+				'periode'  => $periode,
          );
          $this->load->view('templates/main', $data);
       } 
@@ -175,7 +177,8 @@ class Laporan extends CI_Controller
             'user'     => infoLogin(),
             'toko'     => $this->db->get('profil_perusahaan')->row(),
             'list'     => $this->lm->getJurnal($awal, $akhir)->result(),
-            'content'  => 'jurnal_umum/laporan'
+            'content'  => 'jurnal_umum/laporan',
+				'periode'  => '-',
          );
          $this->load->view('templates/main', $data);
       }
