@@ -300,6 +300,7 @@
                 $('#subtot').html(obj.subtotal);
                 $('#subtotal').val(obj.subtotal);
                 $('#grandtotal').val(obj.subtotal);
+				// $('#harga_sales').val(obj.harga_sales);
                 // $('#nominal_ppn').val(ppn);
                 $('#nominal').val(obj.subtotal);
 

@@ -67,7 +67,7 @@ class Stok_m extends CI_Model
             'id_barang' => htmlspecialchars($id, true),
             'jenis' => $jenis == 'Stok Masuk' ? 'Stok Masuk' : 'Stok Keluar',
             'jml' => $jml,
-            'stok_akhir' => $hasil,
+            'stok_akhir' => $jml,
         ];
         $this->db->insert('transaksi', $trans_stok);
 
