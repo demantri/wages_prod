@@ -47,7 +47,7 @@
 		 								<input type="hidden" class="form-control" name="idbarangitem" id="idbarangitem" readonly>
 		 								<label class="control-label col-md-3 col-sm-3 col-xs-12" style="margin-right:9px">Barcode</label>
 		 								<div class="input-group">
-		 									<input type="text" class="form-control" name="barcode" id="barcode" autofocus autocomplete="off" onkeypress="scanBarcode()">
+		 									<input type="text" class="form-control" name="barcode" id="barcode" autofocus autocomplete="off" onkeypress="scanBarcode()" required>
 		 									<span class="input-group-btn">
 		 										<button type="button" onclick="tampildata()" class="btn btn-primary"><i class="fa fa-search"></i></button>
 		 									</span>
@@ -56,7 +56,7 @@
 		 							<div class="form-group">
 		 								<label class="control-label col-md-3 col-sm-3 col-xs-12">Qty</label>
 		 								<div class="col-md-9 col-sm-9 col-xs-12">
-		 									<input type="number" class="form-control" name="qty" id="qty" autocomplete="off">
+		 									<input type="number" class="form-control" name="qty" min="1" id="qty" autocomplete="off" required>
 		 								</div>
 		 							</div>
 		 						</div>
@@ -81,7 +81,7 @@
 		 								</div>
 		 							</div>
 		 							<div style="text-align: right">
-		 								<button type="button" onclick="addItemByClick()" class="btn btn-success btn-sm"><i class="fa fa-shopping-cart m-right-xs"></i> Tambah</button>
+		 								<button type="button" onclick="addItemByClick()" class="btn btn-success btn-sm" id="btnTambah"><i class="fa fa-shopping-cart m-right-xs"></i> Tambah</button>
 		 							</div>
 		 						</div>
 		 					</div>
@@ -95,7 +95,7 @@
 		 							<div class="clearfix"></div>
 		 						</div>
 		 						<div class="x_content">
-		 							<table id="detilitem" width="100%" class="table table-striped table-bordered">
+		 							<table id="table" width="100%" class="table table-striped table-bordered">
 		 								<thead>
 		 									<tr>
 		 										<th>Barcode</th>

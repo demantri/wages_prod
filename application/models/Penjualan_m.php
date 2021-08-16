@@ -14,9 +14,21 @@ class Penjualan_m extends CI_Model
 
     public function getDetilJual()
     {
-        $sql = "SELECT a.id_detil_jual, b.barcode, b.nama_barang, b.harga_jual, a.qty_jual, a.diskon, a.subtotal FROM detil_penjualan a, barang b WHERE b.id_barang = a.id_barang AND a.id_jual IS NULL";
+        $sql = "SELECT a.id_detil_jual, b.barcode, b.nama_barang, b.harga_jual, a.qty_jual, a.diskon, a.subtotal 
+		FROM detil_penjualan a, barang b 
+		WHERE b.id_barang = a.id_barang 
+		AND a.id_jual IS NULL";
         return $this->db->query($sql)->result_array();
     }
+
+	public function cobadetil()
+	{
+		$sql = "SELECT a.id_detil_jual, b.barcode, b.nama_barang, b.harga_jual, a.qty_jual, a.diskon, a.subtotal 
+		FROM detil_penjualan a, barang b 
+		WHERE b.id_barang = a.id_barang 
+		AND a.id_jual IS NULL";
+        return $this->db->query($sql)->result();
+	}
 
 
     public function addItem($id, $qty, $subtotal, $harga)

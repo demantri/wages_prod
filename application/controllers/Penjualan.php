@@ -18,6 +18,7 @@ class Penjualan extends CI_Controller
       'user'     => infoLogin(),
       'customer' => $this->db->get('customer')->result_array(),
       'toko'     => $this->db->get('profil_perusahaan')->row(),
+			'detil'		 => $this->Penjualan_m->cobadetil(),
       'content'  => 'penjualan/index',
     );
     $this->load->view('templates/main', $data);

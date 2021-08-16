@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="<?php echo base_url('assets/select2/select2.css'); ?>" type="text/css" />
   <link rel="stylesheet" href="<?php echo base_url('assets/icomoon/styles.css'); ?>" type="text/css" />
   <link href="<?php echo base_url('assets/') ?>vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+	<script src="<?php echo base_url('assets/') ?>vendors/jquery/dist/jquery.min.js"></script>
+
 </head>
 <script>
   var base_url = "<?php echo base_url() ?>";
